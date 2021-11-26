@@ -302,3 +302,107 @@ console.log(ageSumNew)
 // Get total years for all companies
 const totalYears = companies.reduce((acc,company) => acc + (company.end-company.start), 0)
 console.log(totalYears)
+
+// // Callbacks
+// const posts = [
+//     { title: 'Post One', body: 'This is post one'},
+//     { title: 'Post Two', body: 'This is post two'}
+// ]
+
+// function getPosts() {
+//     setTimeout(() => {
+//         let output = ''
+//         posts.forEach((post,index) => {
+//             output += `<li>${post.title}</li>`
+//         },)
+//         document.body.innerHTML = output
+//     }, 1000)
+// }
+
+// function createPost(post, callback) {
+//     setTimeout( () => {
+//         posts.push(post);
+//         callback();
+//     }, 2000)
+// }
+
+// createPost({ title: 'Post Three', body: 'This is post three'}, getPosts) // the callback function here is the getPosts. So creates them before getting them
+
+// Promises
+// Callbacks
+const posts = [
+    { title: 'Post One', body: 'This is post one'},
+    { title: 'Post Two', body: 'This is post two'}
+]
+
+function getPosts() {
+    setTimeout(() => {
+        let output = ''
+        posts.forEach((post,index) => {
+            output += `<li>${post.title}</li>`
+        },)
+        document.body.innerHTML = output
+    }, 1000)
+}
+
+function createPost(post) {
+    return new Promise((resolve, reject) => {
+    setTimeout( () => {
+        posts.push(post);
+        
+        const error = false;
+
+        if (!error) {
+            resolve();
+        }
+        else {
+            reject('Error: Something went wrong')
+        }
+    }, 2000)
+    })
+}
+
+createPost({ title: 'Post Three', body:'This is post three'})
+    .then(getPosts) // if promise is resolved calls getPosts unlike the callback option above
+    .catch(err => console.log(err)) // else
+
+// Promise in javascript is just a commitment
+let p = new Promise((resolve,reject) => {
+    let a = 1 + 1
+    if (a == 2){
+        resolve('Success');
+    }
+    else {
+        reject('Failed')
+    }
+})
+
+p.then(message => console.log(message)).catch(message=>console.log(message))
+// Both then and catch take a parameter
+// If resolved then do this
+// elese rejected catch the error
+
+const promise4 =  fetch ('https://jsonplaceholder.typicode.com/users').then(res => res.json())
+console.log(promise4)
+
+
+// Async await better way to handle promises
+function makeRequest(location) {
+    return new Promise((resolve, reject) => {
+        if (location === 'Google'){
+            resolve('Google says hi')
+        } else {
+            reject('We can only talk to google')
+        }
+    })
+}
+async function doWork() {
+    try {
+        const response = await makeRequest('Google')
+        console.log(response)
+    } catch(err) {
+        console.log(err)
+    }
+}
+
+doWork()
