@@ -158,7 +158,7 @@ console.log(person1)
 console.log(person1.getFullName)
 
 // Class
-class Person {
+class Person3 {
     constructor(firstName, lastName, dob) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -171,5 +171,65 @@ class Person {
 
     getFullName() {
         return `${this.firstName} ${this.lastName}`
+    }
+}
+const person2 = new Person3('John','Doe','4-3-1980')
+console.log(person2.getFullName())
+console.log(person2)
+
+// DOM
+// Selection
+// Single element selectors
+console.log(document.getElementById('my-form'))
+console.log(document.querySelector('.container'))
+console.log(document.querySelector('h1')) // coz it's a single element selector it will select the first one. Can do array methods on
+
+//Multi element selectors
+console.log(document.querySelectorAll('.item')) //use this, returns a node list
+console.log(document.getElementsByClassName('item')) // older version - > returns a html collection which you can't do array methods on
+const items = document.querySelectorAll('.item')
+items.forEach( item => console.log(item))
+
+// Manipulating the dom
+const ul = document.querySelector('.items')
+// ul.remove(); // remove the unorder list
+// ul.lastElementChild.remove() // remove the last item
+ul.firstElementChild.textContent = 'Hello'; //changed first item
+ul.children[1].innerText = 'Brad'
+ul.lastElementChild.innerHTML = '<h1>Hello</h1>'
+const btn = document.querySelector('.btn')
+btn.style.background = 'red'
+//Events
+btn.addEventListener('click', e => {
+    e.preventDefault()
+    console.log('click')
+    document.querySelector('#my-form').style.background = '#ccc'
+    document.querySelector('body').classList.add('bg-dark')
+})
+
+const myForm = document.querySelector('#my-form')
+const nameInput = document.querySelector('#name')
+const emailInput = document.querySelector('#email')
+const msg = document.querySelector('.msg')
+const userList = document.querySelector('#users')
+
+myForm.addEventListener('submit', onSubmit)
+
+function onSubmit(e) {
+    e.preventDefault();
+
+    if (nameInput.vale === '' || emailInput.value === '') {
+        msg.classList.add('error') // class defined in stlye.css
+        msg.innerHTML = 'Please enter all fields'
+
+        setTimeout( () => msg.remove(), 3000)
+    }
+    else {
+        const li = document.createElement('li') //can create elements
+        li.appendChild(document.createTextNode(`${nameInput.value} : ${emailInput.value}`))
+        userList.appendChild(li)
+
+        nameInput.value = ''
+        emailInput.value = ''
     }
 }
